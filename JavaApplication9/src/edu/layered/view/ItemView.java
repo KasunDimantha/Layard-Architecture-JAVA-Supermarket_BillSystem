@@ -4,16 +4,23 @@
  */
 package edu.layered.view;
 
+import edu.layered.dto.ItemDto;
+import edu.layered.item.ItemController;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author tharidu dilshan
  */
 public class ItemView extends javax.swing.JFrame {
-
+    private ItemController itemController;
     /**
      * Creates new form ItemView
      */
     public ItemView() {
+        itemController = new ItemController();
         initComponents();
     }
 
@@ -280,7 +287,21 @@ public class ItemView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void saveItem() {
-        
+        try {
+            ItemDto itemDto = new ItemDto(
+                    TextItemCode.getText(),
+                    TextIDescription.getText(),
+                    TextIPackSize.getText(),
+                    Double.parseDouble(TextIUnitPrice.getText()),
+                    Integer.parseInt(TextIQOH.getText())
+            );
+            
+            String resp = itemController.save(itemDto);
+            JOptionPane.showMessageDialog(this, resp);
+        } catch (Exception ex) {
+            Logger.getLogger(ItemView.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void searchItem() {
