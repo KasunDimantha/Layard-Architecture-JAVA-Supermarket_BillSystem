@@ -5,6 +5,7 @@
 package edu.layered.service.custom.impl;
 
 import edu.layered.dto.ItemDto;
+import edu.layered.entity.ItemEntity;
 import edu.layered.service.custom.ItemService;
 import java.util.ArrayList;
 
@@ -15,8 +16,15 @@ import java.util.ArrayList;
 public class ItemServiceImpl implements ItemService{
 
     @Override
-    public String saveItem(ItemDto itemDto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String saveItem(ItemDto dto) throws Exception {
+        ItemEntity itemEntity = new ItemEntity(
+                dto.getItemCode(), 
+                dto.getDescription(), 
+                dto.getPackSize(), 
+                dto.getUnitPrice(), 
+                dto.getQoh());
+        
+        return null;
     }
 
     @Override
