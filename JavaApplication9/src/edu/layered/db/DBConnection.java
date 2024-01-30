@@ -4,7 +4,7 @@
  */
 package edu.layered.db;
 
-import com.sun.jdi.connect.spi.Connection;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -18,9 +18,8 @@ public class DBConnection {
     
     private static DBConnection dBConnection;
     private Connection connection;
-    
-    private DBConnection(){
-        
+
+    private DBConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/Supermarket", "root", "WGkd1997@");
@@ -28,7 +27,7 @@ public class DBConnection {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static DBConnection getInstance() {
         if (dBConnection == null) {
             dBConnection = new DBConnection();
@@ -36,8 +35,9 @@ public class DBConnection {
 
         return dBConnection;
     }
-    
-    public Connection getConnection(){
+
+    public Connection getConnection() {
         return connection;
     }
+
 }

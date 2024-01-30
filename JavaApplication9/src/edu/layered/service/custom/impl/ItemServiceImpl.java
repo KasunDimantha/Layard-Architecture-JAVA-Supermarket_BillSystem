@@ -4,6 +4,8 @@
  */
 package edu.layered.service.custom.impl;
 
+import edu.layered.dao.DaoFactory;
+import edu.layered.dao.custom.ItemDao;
 import edu.layered.dto.ItemDto;
 import edu.layered.entity.ItemEntity;
 import edu.layered.service.custom.ItemService;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
  * @author tharidu dilshan
  */
 public class ItemServiceImpl implements ItemService{
+    
+    private ItemDao itemDao = (ItemDao) DaoFactory.getInstance().getDao(DaoFactory.DaoTypes.ITEM);
 
     @Override
     public String saveItem(ItemDto dto) throws Exception {
@@ -24,7 +28,11 @@ public class ItemServiceImpl implements ItemService{
                 dto.getUnitPrice(), 
                 dto.getQoh());
         
-        return null;
+        if(itemDao.add(itemEntity)){
+            return "Successfully Saved";
+        } else{
+            return "Fail";
+        }
     }
 
     @Override

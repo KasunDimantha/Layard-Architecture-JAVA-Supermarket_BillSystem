@@ -4,6 +4,7 @@
  */
 package edu.layered.dao.custom.impl;
 
+import edu.layered.dao.CrudUtil;
 import edu.layered.dao.custom.ItemDao;
 import edu.layered.entity.ItemEntity;
 import java.util.ArrayList;
@@ -16,7 +17,12 @@ public class ItemDaoImpl implements ItemDao{
 
     @Override
     public boolean add(ItemEntity t) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return CrudUtil.executeUpdate("INSERT INTO ITEM VALUES(?,?,?,?,?)", 
+                t.getItemCode(),
+                t.getDescription(),
+                t.getPackSize(),
+                t.getUnitPrice(),
+                t.getQoh());
     }
 
     @Override

@@ -4,12 +4,14 @@
  */
 package edu.layered;
 
+import edu.layered.view.ItemView;
+
 /**
  *
  * @author tharidu dilshan
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello");
+        new ItemView().setVisible(true);
     }
 }

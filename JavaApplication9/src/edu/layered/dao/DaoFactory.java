@@ -26,7 +26,7 @@ public class DaoFactory {
     public SuperDao getDao(DaoTypes type) {
         switch (type) {
             case ITEM:
-                return null;
+                return new ItemDaoImpl();
             case CUSTOMER:
                 return null;
             case ORDER:

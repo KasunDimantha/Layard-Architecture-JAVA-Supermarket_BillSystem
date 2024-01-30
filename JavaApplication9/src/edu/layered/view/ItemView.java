@@ -5,7 +5,7 @@
 package edu.layered.view;
 
 import edu.layered.dto.ItemDto;
-import edu.layered.item.ItemController;
+import edu.layered.controller.ItemController;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
