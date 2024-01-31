@@ -7,6 +7,7 @@ package edu.layered.controller;
 import edu.layered.dto.CustomerDto;
 import edu.layered.service.ServiceFactory;
 import edu.layered.service.custom.CustomerService;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,5 +19,21 @@ public class CustomerController {
     
     public String save(CustomerDto customerDto) throws Exception{
         return customerService.saveCustomer(customerDto);
+    }
+    
+    public String update(CustomerDto customerDto) throws Exception{
+        return customerService.UpdateCustomer(customerDto);
+    }
+    
+    public String delete(String id) throws Exception{
+        return customerService.deleteCustomer(id);
+    }
+    
+    public CustomerDto get(String id) throws Exception{
+        return customerService.getCustomer(id);
+    }
+    
+    public ArrayList<CustomerDto> getAll() throws Exception{
+        return customerService.getAll();
     }
 }
