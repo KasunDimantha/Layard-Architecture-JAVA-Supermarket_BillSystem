@@ -41,23 +41,52 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public String UpdateCustomer(CustomerDto itemDto) throws Exception {
-        
+    public String UpdateCustomer(CustomerDto dto) throws Exception {
+        CustomerEntity customerEntity = new CustomerEntity(
+                dto.getCustId(), dto.getTitle(),
+                dto.getName(), dto.getDob(),
+                dto.getSalary(), dto.getAddress(), dto.getCity(), dto.getProvince(),
+                dto.getZip());
+
+        if (customerDao.update(customerEntity)) {
+            return "Successfully Updated";
+        } else {
+            return "Fail";
+        }
     }
 
     @Override
-    public String deleteCustomer(String itemCode) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String deleteCustomer(String id) throws Exception {
+        if (customerDao.delete(id)) {
+            return "Successfully Deleted";
+        } else {
+            return "Fail";
+        }
     }
 
     @Override
-    public CustomerDto getCustomer(String itemCode) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public CustomerDto getCustomer(String id) throws Exception {
+        CustomerEntity entity = customerDao.get(id);
+        if (entity != null) {
+            return new CustomerDto(entity.getCustId(),
+                    entity.getTitle(), entity.getName(), entity.getDob(),
+                    entity.getSalary(), entity.getAddress(), entity.getCity(),
+                    entity.getProvince(), entity.getZip());
+        }
+        return null;
     }
 
     @Override
     public ArrayList<CustomerDto> getAll() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<CustomerDto> customerDtos = new ArrayList<>();
+        ArrayList<CustomerEntity> customerEntities = customerDao.getAll();
+        for (CustomerEntity entity : customerEntities) {
+            customerDtos.add(new CustomerDto(entity.getCustId(),
+                    entity.getTitle(), entity.getName(), entity.getDob(),
+                    entity.getSalary(), entity.getAddress(), entity.getCity(),
+                    entity.getProvince(), entity.getZip()));
+        }
+        return customerDtos;
     }
 
 }
