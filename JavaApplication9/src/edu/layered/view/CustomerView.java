@@ -397,7 +397,15 @@ public class CustomerView extends javax.swing.JFrame {
     }
 
     private void deleteCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String custId = TextCustID.getText();
+            String resp = customerController.delete(custId);
+            JOptionPane.showMessageDialog(this, resp);
+            loadCustomers();
+            clear();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void searchCustomers() {
