@@ -36,23 +36,56 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public String UpdateItem(ItemDto itemDto) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String UpdateItem(ItemDto dto) throws Exception {
+        ItemEntity itemEntity = new ItemEntity(
+                dto.getItemCode(), 
+                dto.getDescription(), 
+                dto.getPackSize(), 
+                dto.getUnitPrice(), 
+                dto.getQoh());
+        
+        if(itemDao.add(itemEntity)){
+            return "Successfully Updated";
+        } else{
+            return "Fail";
+        }
     }
 
     @Override
     public String deleteItem(String itemCode) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (itemDao.delete(itemCode)){
+            return "Successfully Deleted";
+        } else{
+            return "Fail";
+        }
     }
 
     @Override
     public ItemDto getItem(String itemCode) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ItemEntity itemEntity = itemDao.get(itemCode);
+        return new ItemDto(
+                itemEntity.getItemCode(),
+                itemEntity.getDescription(),
+                itemEntity.getPackSize(),
+                itemEntity.getUnitPrice(),
+                itemEntity.getQoh());
     }
 
     @Override
     public ArrayList<ItemDto> getAll() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<ItemEntity> itemEntities = itemDao.getAll();
+
+        ArrayList<ItemDto> itemDtos = new ArrayList<>();
+
+        for (ItemEntity itemEntity : itemEntities) {
+            itemDtos.add(new ItemDto(
+                itemEntity.getItemCode(),
+                itemEntity.getDescription(),
+                itemEntity.getPackSize(),
+                itemEntity.getUnitPrice(),
+                itemEntity.getQoh()));
+        }
+        return itemDtos;
     }
     
     
