@@ -6,7 +6,9 @@ package edu.layered.view;
 
 import edu.layered.controller.CustomerController;
 import edu.layered.dto.CustomerDto;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,6 +23,7 @@ public class CustomerView extends javax.swing.JFrame {
     public CustomerView() {
         customerController = new CustomerController();
         initComponents();
+        loadCustomers();
     }
 
     /**
@@ -361,7 +364,7 @@ public class CustomerView extends javax.swing.JFrame {
             String result = customerController.save(dto);
             System.out.println(result);
             JOptionPane.showMessageDialog(this, result);
-            
+            loadCustomers();
             clear();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -382,7 +385,29 @@ public class CustomerView extends javax.swing.JFrame {
     }
 
     private void loadCustomers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String columns[] = {"Id", "Name", "Address", "Salary", "Postal Code"};
+            DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+
+            };
+
+            TableCustomer.setModel(dtm);
+
+            ArrayList<CustomerDto> customerDtos = customerController.getAll();
+
+            for (CustomerDto customerDto : customerDtos) {
+                Object[] rowData = {customerDto.getCustId(), customerDto.getTitle() + " " + customerDto.getName(),
+                    customerDto.getAddress() + ", " + customerDto.getCity(), customerDto.getSalary(), customerDto.getZip()};
+                dtm.addRow(rowData);
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
     
     private void clear() {
