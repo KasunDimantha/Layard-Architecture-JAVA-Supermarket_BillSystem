@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 public class CustomerView extends javax.swing.JFrame {
 
     private CustomerController customerController;
+
     /**
      * Creates new form CustomerView
      */
@@ -350,7 +351,7 @@ public class CustomerView extends javax.swing.JFrame {
 
     private void saveCustomer() {
         CustomerDto dto = new CustomerDto();
-        
+
         dto.setCustId(TextCustID.getText());
         dto.setTitle(TextCustTitle.getText());
         dto.setName(TextCustName.getText());
@@ -373,7 +374,26 @@ public class CustomerView extends javax.swing.JFrame {
     }
 
     private void updateCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            CustomerDto dto = new CustomerDto();
+
+            dto.setCustId(TextCustID.getText());
+            dto.setTitle(TextCustTitle.getText());
+            dto.setName(TextCustName.getText());
+            dto.setDob(TextDOB.getText());
+            dto.setSalary(Double.parseDouble(TextSalary.getText()));
+            dto.setAddress(TextCustAddress.getText());
+            dto.setCity(TextCity.getText());
+            dto.setProvince(TextProvince.getText());
+            dto.setZip(TextPostalCode.getText());
+
+            String resp = customerController.update(dto);
+            JOptionPane.showMessageDialog(this, resp);
+            loadCustomers();
+            clear();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void deleteCustomer() {
@@ -409,7 +429,7 @@ public class CustomerView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
-    
+
     private void clear() {
         TextCustID.setText("");
         TextCustTitle.setText("");
