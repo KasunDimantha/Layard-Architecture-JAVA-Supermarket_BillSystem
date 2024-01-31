@@ -4,11 +4,16 @@
  */
 package edu.layered.view;
 
-import edu.layered.dto.ItemDto;
+
+import com.sun.jdi.connect.spi.Connection;
 import edu.layered.controller.ItemController;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import edu.layered.db.DBConnection;
+import edu.layered.dto.ItemDto;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,6 +27,7 @@ public class ItemView extends javax.swing.JFrame {
     public ItemView() {
         itemController = new ItemController();
         initComponents();
+        loadItem();
     }
 
     /**
@@ -159,7 +165,7 @@ public class ItemView extends javax.swing.JFrame {
                     .addComponent(ButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,18 +203,24 @@ public class ItemView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(30, 30, 30))
         );
 
         pack();
@@ -298,21 +310,97 @@ public class ItemView extends javax.swing.JFrame {
             
             String resp = itemController.save(itemDto);
             JOptionPane.showMessageDialog(this, resp);
+            clear();
         } catch (Exception ex) {
-            Logger.getLogger(ItemView.class.getName()).log(Level.SEVERE, null, ex);
+            
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
 
     private void searchItem() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String id = TableItem.getValueAt(TableItem.getSelectedRow(), 0).toString();
+            System.out.println(id);
+            
+            ItemDto dto = itemController.get(id);
+            
+            if (dto != null) {
+                TextItemCode.setText(dto.getItemCode());
+                TextIDescription.setText(dto.getDescription());
+                TextIPackSize.setText(dto.getPackSize());
+                TextIUnitPrice.setText(dto.getUnitPrice().toString());
+                TextIQOH.setText(dto.getQoh().toString());
+            } else {
+                JOptionPane.showMessageDialog(this, "Item not found");
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(ItemView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }       
     }
 
     private void updateItem() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            ItemDto dto = new ItemDto();
+            
+            dto.setItemCode(TextItemCode.getText());
+            dto.setDescription(TextIDescription.getText());
+            dto.setPackSize(TextIPackSize.getText());
+            dto.setUnitPrice(Double.parseDouble(TextIUnitPrice.getText()));
+            dto.setQoh(Integer.parseInt(TextIQOH.getText()));
+            
+            String resp = itemController.update(dto);
+            
+            JOptionPane.showMessageDialog(this, resp);
+            loadItem();
+            clear();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void deleteButton() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String textID =  TextItemCode.getText();
+            
+            String resp = itemController.delete(textID);
+            JOptionPane.showMessageDialog(this, resp);
+            loadItem();
+            clear();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
+
+    private void loadItem() {
+        try {
+            String[] column = {"ID", "Description", "Pack Size", "Unit Price", "QOH"};
+            DefaultTableModel dtm = new  DefaultTableModel(column, 0){
+                
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            TableItem.setModel(dtm);
+            
+            ArrayList<ItemDto> itemDtos = itemController.getAll();
+            for (ItemDto itemDto : itemDtos) {
+                Object[] rowData = {itemDto.getItemCode(), itemDto.getDescription(), itemDto.getPackSize(), itemDto.getUnitPrice(), itemDto.getQoh()};
+                
+                dtm.addRow(rowData);
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(ItemView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }  
+    }
+    
+    private void clear(){
+        TextItemCode.setText("");
+        TextIDescription.setText("");
+        TextIPackSize.setText("");
+        TextIUnitPrice.setText("");
+        TextIQOH.setText("");
     }
 }

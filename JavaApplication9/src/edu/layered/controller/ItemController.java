@@ -33,7 +33,7 @@ public class ItemController {
         return itemService.getItem(itemId);
     }
     
-    public ArrayList<ItemDto> getAll(ItemDto itemDto) throws Exception{
+    public ArrayList<ItemDto> getAll() throws Exception{
         return itemService.getAll();
     }
     
