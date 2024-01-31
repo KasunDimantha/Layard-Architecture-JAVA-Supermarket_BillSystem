@@ -7,6 +7,7 @@ package edu.layered.controller;
 import edu.layered.dto.ItemDto;
 import edu.layered.service.ServiceFactory;
 import edu.layered.service.custom.ItemService;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +19,22 @@ public class ItemController {
 
     public String save(ItemDto itemDto) throws Exception{
         return itemService.saveItem(itemDto);
+    }
+    
+    public String update(ItemDto itemDto) throws Exception{
+        return itemService.UpdateItem(itemDto);
+    }
+    
+    public String delete(String itemId) throws Exception{
+        return itemService.deleteItem(itemId);
+    }
+    
+    public ItemDto get(String itemId) throws Exception{
+        return itemService.getItem(itemId);
+    }
+    
+    public ArrayList<ItemDto> getAll(ItemDto itemDto) throws Exception{
+        return itemService.getAll();
     }
     
 }
