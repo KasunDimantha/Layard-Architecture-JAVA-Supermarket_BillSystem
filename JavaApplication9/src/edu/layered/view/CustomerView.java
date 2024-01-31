@@ -4,18 +4,23 @@
  */
 package edu.layered.view;
 
+import edu.layered.controller.CustomerController;
+import edu.layered.dto.CustomerDto;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author tharidu dilshan
  */
 public class CustomerView extends javax.swing.JFrame {
 
+    private CustomerController customerController;
     /**
      * Creates new form CustomerView
      */
     public CustomerView() {
+        customerController = new CustomerController();
         initComponents();
-        loadCustomers();
     }
 
     /**
@@ -266,7 +271,6 @@ public class CustomerView extends javax.swing.JFrame {
 
     private void ButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSaveActionPerformed
         saveCustomer();
-        loadCustomers();
     }//GEN-LAST:event_ButtonSaveActionPerformed
 
     private void ButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonUpdateActionPerformed
@@ -342,7 +346,27 @@ public class CustomerView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void saveCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        CustomerDto dto = new CustomerDto();
+        
+        dto.setCustId(TextCustID.getText());
+        dto.setTitle(TextCustTitle.getText());
+        dto.setName(TextCustName.getText());
+        dto.setDob(TextDOB.getText());
+        dto.setSalary(Double.parseDouble(TextSalary.getText()));
+        dto.setAddress(TextCustAddress.getText());
+        dto.setCity(TextCity.getText());
+        dto.setProvince(TextProvince.getText());
+        dto.setZip(TextPostalCode.getText());
+        try {
+            String result = customerController.save(dto);
+            System.out.println(result);
+            JOptionPane.showMessageDialog(this, result);
+            
+            clear();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void updateCustomer() {
@@ -359,5 +383,17 @@ public class CustomerView extends javax.swing.JFrame {
 
     private void loadCustomers() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    private void clear() {
+        TextCustID.setText("");
+        TextCustTitle.setText("");
+        TextCustName.setText("");
+        TextDOB.setText("");
+        TextSalary.setText("");
+        TextCustAddress.setText("");
+        TextCity.setText("");
+        TextProvince.setText("");
+        TextPostalCode.setText("");
     }
 }

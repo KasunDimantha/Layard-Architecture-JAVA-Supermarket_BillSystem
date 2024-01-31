@@ -4,6 +4,7 @@
  */
 package edu.layered.dao.custom.impl;
 
+import edu.layered.dao.CrudUtil;
 import edu.layered.dao.custom.CustomerDao;
 import edu.layered.entity.CustomerEntity;
 import java.util.ArrayList;
@@ -16,7 +17,16 @@ public class CustomerDaoImpl implements CustomerDao{
 
     @Override
     public boolean add(CustomerEntity t) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return CrudUtil.executeUpdate("INSERT INTO customer VALUES (?,?,?,?,?,?,?,?,?)", 
+                t.getCustId(),
+                t.getTitle(),
+                t.getName(),
+                t.getDob(),
+                t.getSalary(),
+                t.getAddress(),
+                t.getCity(),
+                t.getProvince(),
+                t.getZip());
     }
 
     @Override

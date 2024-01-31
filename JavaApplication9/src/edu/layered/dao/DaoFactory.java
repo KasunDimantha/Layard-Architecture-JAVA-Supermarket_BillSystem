@@ -4,6 +4,7 @@
  */
 package edu.layered.dao;
 
+import edu.layered.dao.custom.impl.CustomerDaoImpl;
 import edu.layered.dao.custom.impl.ItemDaoImpl;
 
 /**
@@ -28,7 +29,7 @@ public class DaoFactory {
             case ITEM:
                 return new ItemDaoImpl();
             case CUSTOMER:
-                return null;
+                return new CustomerDaoImpl();
             case ORDER:
                 return null;
             case ORDER_DETAIL:

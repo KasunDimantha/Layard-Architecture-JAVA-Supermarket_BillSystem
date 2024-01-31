@@ -4,6 +4,7 @@
  */
 package edu.layered;
 
+import edu.layered.view.CustomerView;
 import edu.layered.view.ItemView;
 
 /**
@@ -12,6 +13,7 @@ import edu.layered.view.ItemView;
  */
 public class Main {
     public static void main(String[] args) {
-        new ItemView().setVisible(true);
+        //new ItemView().setVisible(true);
+        new CustomerView().setVisible(true);
     }
 }

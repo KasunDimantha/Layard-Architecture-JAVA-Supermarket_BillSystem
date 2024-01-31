@@ -14,9 +14,9 @@ import java.util.ArrayList;
  * @author tharidu dilshan
  */
 public interface CustomerService extends SuperService{
-    String saveCustomer(CustomerDto itemDto) throws Exception;
-    String UpdateCustomer(CustomerDto itemDto) throws Exception;
-    String deleteCustomer(String itemCode) throws Exception;
-    CustomerDto getCustomer(String itemCode) throws Exception;
+    String saveCustomer(CustomerDto customeDto) throws Exception;
+    String UpdateCustomer(CustomerDto customeDto) throws Exception;
+    String deleteCustomer(String customeCode) throws Exception;
+    CustomerDto getCustomer(String customerCode) throws Exception;
     ArrayList<CustomerDto> getAll() throws Exception;
 }
