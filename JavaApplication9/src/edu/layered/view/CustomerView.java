@@ -409,7 +409,26 @@ public class CustomerView extends javax.swing.JFrame {
     }
 
     private void searchCustomers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String id = TableCustomer.getValueAt(TableCustomer.getSelectedRow(), 0).toString();
+        try {
+            CustomerDto dto = customerController.get(id);
+
+            if (dto != null) {
+                TextCustID.setText(dto.getCustId());
+                TextCustName.setText(dto.getName());
+                TextCustTitle.setText(dto.getTitle());
+                TextDOB.setText(dto.getDob());
+                TextSalary.setText(Double.toString(dto.getSalary()));
+                TextCustAddress.setText(dto.getAddress());
+                TextCity.setText(dto.getCity());
+                TextProvince.setText(dto.getProvince());
+                TextPostalCode.setText(dto.getZip());
+            } else {
+                JOptionPane.showMessageDialog(this, "Customer Not Found");
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void loadCustomers() {
