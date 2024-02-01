@@ -4,17 +4,29 @@
  */
 package edu.layered.view;
 
+import edu.layered.controller.ItemController;
+import edu.layered.dto.ItemDto;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
+
 /**
  *
  * @author tharidu dilshan
  */
 public class OrderView extends javax.swing.JFrame {
 
+    private ItemController itemController;
     /**
      * Creates new form OrderView
      */
     public OrderView() {
+        itemController = new ItemController();
         initComponents();
+        loadTable();
     }
 
     /**
@@ -312,7 +324,19 @@ public class OrderView extends javax.swing.JFrame {
     }
 
     private void searchItem() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String ItemID = TextItemID.getText();
+            ItemDto itemDto = itemController.get(ItemID);
+            
+            if(itemDto != null){
+                LabelItemData.setText(itemDto.getDescription() + " | "+ itemDto.getPackSize() +" | "+ itemDto.getQoh());
+            } else {
+                JOptionPane.showMessageDialog(this, "Item not found");
+            }
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void addToTable() {
@@ -321,5 +345,16 @@ public class OrderView extends javax.swing.JFrame {
 
     private void placeOrder() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void loadTable() {
+        String[] columns = {"Item Code", "Qty", "Discount"};
+        DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        TableOrder.setModel(dtm);
     }
 }
