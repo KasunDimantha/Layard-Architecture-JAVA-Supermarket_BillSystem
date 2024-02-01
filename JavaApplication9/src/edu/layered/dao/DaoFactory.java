@@ -6,6 +6,8 @@ package edu.layered.dao;
 
 import edu.layered.dao.custom.impl.CustomerDaoImpl;
 import edu.layered.dao.custom.impl.ItemDaoImpl;
+import edu.layered.dao.custom.impl.OrderDaoImpl;
+import edu.layered.dao.custom.impl.OrderDetailDaoImpl;
 
 /**
  *
@@ -31,9 +33,9 @@ public class DaoFactory {
             case CUSTOMER:
                 return new CustomerDaoImpl();
             case ORDER:
-                return null;
+                return new OrderDaoImpl();
             case ORDER_DETAIL:
-                return null;
+                return new OrderDetailDaoImpl();
             default:
                 return null;
         }
