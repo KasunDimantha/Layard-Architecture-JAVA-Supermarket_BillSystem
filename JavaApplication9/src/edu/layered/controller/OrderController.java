@@ -5,15 +5,19 @@
 package edu.layered.controller;
 
 import edu.layered.dto.OrderDto;
+import edu.layered.service.ServiceFactory;
+import edu.layered.service.custom.OrderService;
 
 /**
  *
  * @author tharidu dilshan
  */
 public class OrderController {
+    
+    private OrderService orderService = (OrderService) ServiceFactory.getInstance().getService(ServiceFactory.ServiceType.ORDER);
 
     public String placeOrder(OrderDto dto) throws Exception{
-        return null;
+        return orderService.placeOrder(dto);
     }
     
 }
