@@ -6,10 +6,14 @@ package edu.layered.view;
 
 import edu.layered.controller.CustomerController;
 import edu.layered.controller.ItemController;
+import edu.layered.controller.OrderController;
 import edu.layered.dto.CustomerDto;
 import edu.layered.dto.ItemDto;
 import edu.layered.dto.OrderDetailDto;
+import edu.layered.dto.OrderDto;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,6 +29,7 @@ public class OrderView extends javax.swing.JFrame {
 
     private ItemController itemController;
     private CustomerController customerController;
+    private OrderController orderController;
     private ArrayList<OrderDetailDto> orderDetailDtos = new ArrayList<>();
     /**
      * Creates new form OrderView
@@ -32,6 +37,7 @@ public class OrderView extends javax.swing.JFrame {
     public OrderView() {
         itemController = new ItemController();
         customerController = new CustomerController();
+        orderController = new OrderController();
         initComponents();
         loadTable();
     }
@@ -374,7 +380,15 @@ public class OrderView extends javax.swing.JFrame {
     }
 
     private void placeOrder() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        OrderDto dto = new OrderDto(TextOrderID.getText(), TextCustID.getText(), 
+                sdf.format(new Date()), orderDetailDtos);
+        try {
+            String resp = orderController.placeOrder(dto);
+            JOptionPane.showMessageDialog(this, resp);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
     }
 
     private void loadTable() {
