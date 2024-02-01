@@ -8,8 +8,8 @@ import edu.layered.controller.CustomerController;
 import edu.layered.controller.ItemController;
 import edu.layered.dto.CustomerDto;
 import edu.layered.dto.ItemDto;
+import edu.layered.dto.OrderDetailDto;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,7 +25,7 @@ public class OrderView extends javax.swing.JFrame {
 
     private ItemController itemController;
     private CustomerController customerController;
-    private List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
+    private ArrayList<OrderDetailDto> orderDetailDtos = new ArrayList<>();
     /**
      * Creates new form OrderView
      */
@@ -359,7 +359,18 @@ public class OrderView extends javax.swing.JFrame {
     }
 
     private void addToTable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        OrderDetailDto orderDetailDto = new OrderDetailDto();
+        orderDetailDto.setItemId(TextItemID.getText());
+        orderDetailDto.setQty(TextQty.getText());
+        orderDetailDto.setDiscount(Double.parseDouble(TextDiscount.getText()));
+
+        orderDetailDtos.add(orderDetailDto);
+
+        Object[] rowData = {orderDetailDto.getItemId(), orderDetailDto.getQty(), orderDetailDto.getDiscount()};
+
+        DefaultTableModel dtm = (DefaultTableModel) TableOrder.getModel();
+        dtm.addRow(rowData);
+        clearItemData();
     }
 
     private void placeOrder() {
@@ -375,5 +386,12 @@ public class OrderView extends javax.swing.JFrame {
             }
         };
         TableOrder.setModel(dtm);
+    }
+
+    private void clearItemData() {
+        TextItemID.setText("");
+        TextDiscount.setText("");
+        TextQty.setText("");
+        LabelItemData.setText("");
     }
 }
