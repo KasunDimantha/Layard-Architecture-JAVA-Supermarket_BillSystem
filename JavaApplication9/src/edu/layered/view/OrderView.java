@@ -4,7 +4,9 @@
  */
 package edu.layered.view;
 
+import edu.layered.controller.CustomerController;
 import edu.layered.controller.ItemController;
+import edu.layered.dto.CustomerDto;
 import edu.layered.dto.ItemDto;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,11 +22,13 @@ import javax.swing.table.DefaultTableModel;
 public class OrderView extends javax.swing.JFrame {
 
     private ItemController itemController;
+    private CustomerController customerController;
     /**
      * Creates new form OrderView
      */
     public OrderView() {
         itemController = new ItemController();
+        customerController = new CustomerController();
         initComponents();
         loadTable();
     }
@@ -320,7 +324,19 @@ public class OrderView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void searchCustomer() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            String custID = TextCustID.getText();
+            CustomerDto customerDto = customerController.get(custID);
+            
+            if(customerDto != null){
+                LabelCustData.setText(customerDto.getTitle() + " " + customerDto.getName() + " | " + customerDto.getCity() + " | " + customerDto.getZip());
+            } else {
+                JOptionPane.showMessageDialog(this, "Customer not found");
+            }
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
 
     private void searchItem() {
